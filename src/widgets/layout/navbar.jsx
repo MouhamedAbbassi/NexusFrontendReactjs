@@ -83,6 +83,7 @@ export function Navbar({ brandName, routes, action }) {
 }
 
 
+
 Navbar.displayName = "/src/widgets/layout/navbar.jsx";
 
 export default Navbar;

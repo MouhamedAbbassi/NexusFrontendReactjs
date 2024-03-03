@@ -51,7 +51,7 @@ export const routes = [
     ],
   },
   {
-    title: "auth pages",
+    title: "authentication",
     layout: "auth",
     pages: [
       {

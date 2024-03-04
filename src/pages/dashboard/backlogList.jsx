@@ -15,7 +15,7 @@ const Backlogs = () => {
   const [openMenuIndex, setOpenMenuIndex] = useState(null); // Track which dropdown menu is open
 
   // Menu items
-  const Menu = ["Backlog Details", "Add Tasks", ""];
+  const Menu = ["Backlog Details", ""];
 
   // Fetch backlog data from the server
   useEffect(() => {
@@ -112,6 +112,8 @@ const Backlogs = () => {
                         </Typography>
                       </div>
                     </td>
+                    <td></td>
+                    <td></td>
                     {/* Render dropdown menu */}
                     <td className={className}>
                       <Typography
@@ -129,25 +131,21 @@ const Backlogs = () => {
                       {/* Render menu if open */}
                       {isMenuOpen && (
                        
-                       <ul className="ml-2 pl-1 bg-blue-gray-50 rounded-md border border-blue-gray-100 w-32">
+                       <ul className="ml-2 pl-1 pt-2 pb-2 bg-blue-gray-50 rounded-md border border-blue-gray-100 w-32">
                           {/* Render menu items */}
                           {Menu.map((menu) => (
-                            <li
-                              
+                           <Link to="/backlog/details" 
                               key={menu}
                               className="hover:bg-blue-gray-100 rounded-md mr-1 mt-1  cursor-pointer p-1"
                             >
                               {menu}
-                            </li>
+                         
+                            </Link>
                           ))}
                         </ul>
                       )}
                     </td>
-                    <td className={className}>
-  <Link to="/backlog/details">
-    <button>Backlog Detail</button>
-  </Link>
-</td>
+ 
                   </tr>
                 );
               })}

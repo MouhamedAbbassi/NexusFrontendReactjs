@@ -7,7 +7,7 @@ function App() {
       <Route path="/dashboard/*" element={<Dashboard />} />
       <Route path="/auth/*" element={<Auth />} />
       <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
-      <Route path="/backlog/details" element={<BacklogDetails />} /> {/* Use element prop instead of component */}
+      <Route path="/backlog/details/:id" element={<BacklogDetails />} /> {/* Use element prop instead of component */}
       
 
     </Routes>

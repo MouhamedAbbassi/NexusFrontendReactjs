@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Modal from 'react-modal';
 
 const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
   const { id } = useParams();
@@ -13,6 +14,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
     endDateTime: '',
     attendees: [{ email: '' }],
   });
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
     fetchMeetingData();
@@ -65,16 +67,38 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
     try {
       await axios.put(`http://localhost:3000/meet/update/${meetingId}`, meetingData);
       onMeetingUpdated();
+      closeModal();
     } catch (error) {
       console.error(`Error updating meeting with ID ${meetingId}:`, error);
     }
   };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+  const modalStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        maxWidth: '30%', // Adjust the maximum width as needed,
+    },
+  };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white p-8 rounded-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Update Meeting</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <Modal
+    isOpen={isModalOpen}
+    onRequestClose={closeModal}
+    contentLabel="Update Meeting"
+    style={modalStyles}
+  >
+    <div className="bg-white p-8 rounded-md w-full max-w-md">
+      <h2 className="text-2xl font-bold mb-4">Update Meeting</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
             <span className="text-gray-700">Summary:</span>
             <input
@@ -143,12 +167,12 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
           <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
             Update Meeting
           </button>
-        </form>
+          </form>
         <button onClick={onClose} className="mt-4 text-blue-500">
           Cancel
         </button>
       </div>
-    </div>
+    </Modal>
   );
 };
 

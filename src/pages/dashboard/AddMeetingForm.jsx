@@ -45,6 +45,8 @@ const AddMeetingForm = ({ onClose, onMeetingAdded }) => {
     }
   };
 
+  
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white p-8 rounded-md w-[500px]">

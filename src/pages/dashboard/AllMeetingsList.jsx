@@ -22,8 +22,6 @@ const AllMeetingsList = () => {
   const [eventTitle, setEventTitle] = useState("");
   const [selectEvent, setSelectEvent] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
-  
-  
 
   useEffect(() => {
     fetchMeetingsList();
@@ -120,7 +118,7 @@ const AllMeetingsList = () => {
     };
 
     // Ajouter le nouvel événement au calendrier côté client
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
+    setEvents([...events, newEvent]);
 
   
   };
@@ -152,6 +150,36 @@ const AllMeetingsList = () => {
             meetingId={selectedMeetingId}
           />
         )}
+         {/* Nouvelle section pour afficher le bouton de calendrier */}
+         <div>
+          <div
+            data-tip="tooltip"
+            data-for="calendarTooltip"
+            style={{ cursor: 'pointer' }}
+            onMouseEnter={() => setShowCalendar(true)}
+            onMouseLeave={() => setShowCalendar(false)}
+          >
+            📅
+          </div>
+
+          {showCalendar && (
+             <div style={{ height: "500px", margin: "50px" }}>
+             <Calendar
+               localizer={localizer}
+               events={events}
+               startAccessor="start"
+               endAccessor="end"
+               selectable={true}
+               onSelectSlot={handleSelectSlot}
+               onSelectEvent={handleSelectedEvent}
+             />
+           </div>
+          )}
+
+<Tooltip id="calendarTooltip">
+            <span>Show Calendar</span>
+          </Tooltip>
+        </div>
 
         <ul className="mt-4">
           {meetingsList.map((meeting) => (
@@ -187,37 +215,10 @@ const AllMeetingsList = () => {
             </li>
           ))}
         </ul>
-         {/* Nouvelle section pour afficher le bouton de calendrier */}
-         <div>
-          <div
-            data-tip="tooltip"
-            data-for="calendarTooltip"
-            style={{ cursor: 'pointer' }}
-            onMouseEnter={() => setShowCalendar(true)}
-            onMouseLeave={() => setShowCalendar(false)}
-          >
-            📅
-          </div>
-
-          {showCalendar && (
-            <div style={{ position: 'fixed', top: '50px', right: '20px', zIndex: 9999 }}>
-              <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ width: '300px' }}
-              />
-            </div>
-          )}
-
-<Tooltip id="calendarTooltip">
-            <span>Show Calendar</span>
-          </Tooltip>
-        </div>
+        
       </div>
 
-      
+     
 
       {showModal && (
         <div
@@ -285,5 +286,6 @@ const AllMeetingsList = () => {
     </div>
   );
 };
+
 
 export default AllMeetingsList;

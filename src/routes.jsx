@@ -10,6 +10,7 @@ import { Home, Profile, Tables } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import Backlogs from "./pages/dashboard/backlogList";
 import AllMeetingsList from "./pages/dashboard/AllMeetingsList";
+import SprintList from "./pages/dashboard/SprintList";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -49,6 +50,12 @@ export const routes = [
         name: "meet",
         path: "/meet",
         element: <AllMeetingsList />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "sprint",
+        path: "/sprint",
+        element: <SprintList />,
       },
     ],
   },

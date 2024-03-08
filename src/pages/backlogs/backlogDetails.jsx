@@ -135,8 +135,8 @@ const BacklogDetails = () => {
 
   return (
     <div className="m-1 p-16  flex flex-col gap-12 ">
-      <Card>
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Card  className='mx-28'>
+        <CardHeader variant="gradient" color="gray" className="mb-8 p-6 mx-16" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" color="white">
             Backlog Table
           </Typography>
@@ -147,7 +147,7 @@ const BacklogDetails = () => {
           </Link>
         </CardHeader>
         <CardBody>
-          <table className="w-full min-w-[640px] table-auto">
+          <table className="w-full min-w-[640px] table-auto mx-10">
             <thead>
               <tr>
                 {["Backlog Name", "", "members", "", "completion",].map((el, index) => (
@@ -179,16 +179,16 @@ const BacklogDetails = () => {
           </table>
         </CardBody>
       </Card>
-      <CardHeader variant="gradient" color="gray" className="mb-8 md:ml-96 md:mr-96 p-6" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+      <CardHeader  variant="gradient" color="gray" className="" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' ,height: '60px'}}>
         <Typography variant="h6" color="white">
           Tasks Management
         </Typography>
       </CardHeader>
-      <Container maxW="1200px">
-        <Flex justify="space-beween" height="90vh" className='text-blue-gray-400 font-bold' align="center">
+      <Container maxW="1400px">
+        <Flex justify="space-beween" height="70vh" className='text-blue-gray-400 font-bold' align="center">
           {/* Render todo stack */}
-          <Stack width="300px" className='m-1'>
-            <Heading fontSize="3xl" color="black" textAlign="center">
+          <Stack   width="300px"className="m-1"   >
+          <Heading fontSize="2xl" fontFamily="sans-serif" color="black"   textAlign="center" >
               Todo
             </Heading>
             <List
@@ -197,7 +197,8 @@ const BacklogDetails = () => {
               boxShadow="xl"
               borderRadius="md"
               ref={dropTodoRef}
-              backgroundColor={isTodoOver ? "gray.100" : "transparent"}
+              backgroundColor={isTodoOver ? "gray.50" : "transparent"}
+              borderWidth="1px"
             >
               {todoTasks && todoTasks.map((task, index) => (
                 <Task
@@ -206,15 +207,16 @@ const BacklogDetails = () => {
                   onDropTask={() => moveTaskToStack(task, "Todo")} // Pass status as "Todo"
                   index={index}
                   type="task"
+                  status="Todo"
                 />
               ))}
             </List>
           </Stack>
 
           {/* Render in progress stack */}
-          <Stack width="300px" className='m-1'>
-            <Heading fontSize="3xl" color="black" textAlign="center">
-              In Progress
+          <Stack   width="300px"className="m-1"   >
+          <Heading fontSize="2xl" fontFamily="sans-serif" color="black"  textAlign="center" >
+              Progressing
             </Heading>
             <List
               p="4"
@@ -222,7 +224,8 @@ const BacklogDetails = () => {
               boxShadow="xl"
               borderRadius="md"
               ref={dropInProgressRef}
-              backgroundColor={isInProgressOver ? "gray.100" : "transparent"}
+              backgroundColor={isInProgressOver ? "gray.50" : "transparent"}
+              borderWidth="1px"
             >
               {inProgressTasks && inProgressTasks.map((task, index) => (
                 <Task
@@ -231,14 +234,15 @@ const BacklogDetails = () => {
                   onDropTask={() => moveTaskToStack(task, "Progressing")} // Pass status as "Progressing"
                   index={index}
                   type="task"
+                  status="Progressing"
                 />
               ))}
             </List>
           </Stack>
 
           {/* Render testing stack */}
-          <Stack width="300px" className='m-1'>
-            <Heading fontSize="3xl" color="black" textAlign="center">
+          <Stack   width="300px"className="m-1"   >
+          <Heading fontSize="2xl" fontFamily="sans-serif" color="black"   textAlign="center" >
               Testing
             </Heading>
             <List
@@ -247,7 +251,8 @@ const BacklogDetails = () => {
               boxShadow="xl"
               borderRadius="md"
               ref={dropTestingRef}
-              backgroundColor={isTestingOver ? "gray.100" : "transparent"}
+              backgroundColor={isTestingOver ? "gray.50" : "transparent"}
+              borderWidth="1px"
             >
               {testingTasks && testingTasks.map((task, index) => (
                 <Task
@@ -256,14 +261,15 @@ const BacklogDetails = () => {
                   onDropTask={() => moveTaskToStack(task, "Testing")} // Pass status as "Testing"
                   index={index}
                   type="task"
+                  status="Testing"
                 />
               ))}
             </List>
           </Stack>
 
           {/* Render done stack */}
-          <Stack width="300px" className='m-1'>
-            <Heading fontSize="3xl" color="black" textAlign="center">
+          <Stack   width="300px"className="m-1" >
+          <Heading fontSize="2xl" fontFamily="sans-serif" color="black" textAlign="center" >
               Done
             </Heading>
             <List
@@ -272,7 +278,8 @@ const BacklogDetails = () => {
               boxShadow="xl"
               borderRadius="md"
               ref={dropDoneRef}
-              backgroundColor={isDoneOver ? "gray.100" : "transparent"}
+              backgroundColor={isDoneOver ? "gray.50" : "transparent"}
+              borderWidth="1px"
             >
               {doneTasks && doneTasks.map((task, index) => (
                 <Task
@@ -281,23 +288,26 @@ const BacklogDetails = () => {
                   onDropTask={() => moveTaskToStack(task, "Done")} // Pass status as "Done"
                   index={index}
                   type="task"
+                  status="Done"
                 />
               ))}
             </List>
           </Stack>
 
           {/* Render blocked stack */}
-          <Stack width="300px" className='m-1'>
-            <Heading fontSize="3xl" color="black" textAlign="center">
-              Blocked
-            </Heading>
+          <Stack   width="300px"className="m-1" variant="gradient" color="gray"    >
+          <Heading fontSize="2xl" fontFamily="sans-serif" color="black"  textAlign="center" >
+               Blocked
+          </Heading>
             <List
               p="4"
               minH="70vh"
               boxShadow="xl"
               borderRadius="md"
               ref={dropBlockedRef}
-              backgroundColor={isBlockedOver ? "gray.100" : "transparent"}
+              backgroundColor={isBlockedOver ? "gray.50" : "transparent"}
+              borderWidth="1px" 
+              
             >
               {blockedTasks && blockedTasks.map((task, index) => (
                 <Task
@@ -306,6 +316,7 @@ const BacklogDetails = () => {
                   onDropTask={() => moveTaskToStack(task, "Blocked")} // Pass status as "Blocked"
                   index={index}
                   type="task"
+                  status="Blocked"
                 />
               ))}
             </List>

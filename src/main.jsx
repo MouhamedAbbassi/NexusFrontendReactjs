@@ -19,9 +19,13 @@ import "../public/css/tailwind.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import store from './reduxToolkit/store';
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    
+  
+  <Provider store={store}>
+
+  <React.StrictMode> 
     <BrowserRouter>
       <ThemeProvider>
         <MaterialTailwindControllerProvider>
@@ -34,4 +38,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
+  </Provider>,
+
 );

@@ -6,9 +6,10 @@ import {
   ServerStackIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import Backlogs from "./pages/dashboard/backlogList";
+import AllMeetingsList from "./pages/dashboard/AllMeetingsList";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -41,12 +42,13 @@ export const routes = [
         name: "tables",
         path: "/tables",
         element: <Tables />,
-      },
+      }
+      ,
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-        element: <Notifications />,
+        name: "meet",
+        path: "/meet",
+        element: <AllMeetingsList />,
       },
     ],
   },

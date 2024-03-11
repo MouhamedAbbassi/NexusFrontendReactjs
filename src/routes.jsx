@@ -5,11 +5,13 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import Backlogs from "./pages/dashboard/backlogList";
 import Wakatime from "./pages/dashboard/wakatime";
+import RessourcesList from "./pages/dashboard/ressourcesList";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -52,6 +54,12 @@ export const routes = [
         name: "backlog",
         path: "/backlog",
         element: <Backlogs />,
+      },
+      {
+        icon: < DocumentTextIcon {...icon} />,
+        name: "ressources",
+        path: "/ressources",
+        element: <RessourcesList />,
       },
       {
         icon: <TableCellsIcon {...icon} />,

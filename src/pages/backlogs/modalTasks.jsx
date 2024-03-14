@@ -19,11 +19,30 @@ const ModalTasks = ({ open, setOpen, taskId }) => {
     }
   }, [taskId]);
 
+  const handleChange = (e, field) => {
+    const value = e.target.value;
+    setTask(prevTask => ({
+      ...prevTask,
+      [field]: value
+    }));
+  };
+
   const handleSave = () => {
-    // Add save functionality here
-    // For example, you can send an API request to update the task
-    // After saving, close the modal
-    handleOpen();
+    if (!task) {
+      console.error("Task not found");
+      return;
+    }
+
+    // Send the updated task data to the backend
+    axios.put(`http://localhost:3000/tasks/${taskId}`, task)
+      .then(response => {
+        console.log('Task updated successfully:', response.data);
+        // Close the modal after saving
+        handleOpen();
+      })
+      .catch(error => {
+        console.error('Error updating task:', error);
+      });
   };
 
   return (
@@ -51,11 +70,26 @@ const ModalTasks = ({ open, setOpen, taskId }) => {
       <DialogBody>
         {task && (
           <>
-            <Typography className="mb-3 font-bold">Task Name: {task.name}</Typography>
-            <Typography className="mb-3 font-bold">Task ID: {task.taskId}</Typography>
-             <Typography className="mb-3 font-bold">User Story: {task.userStory}</Typography>
-             <Typography className="mb-3 font-bold">Priority: {task.priority}</Typography>
-             <Typography className="mb-3 font-bold">Deadline: {task.deadLine}</Typography>
+            <div className="mb-3">
+              <Typography className="font-bold">Task Name:</Typography>
+              <input type="text" value={task.name} onChange={(e) => handleChange(e, "name")} />
+            </div>
+            <div className="mb-3">
+              <Typography className="font-bold">Task ID:</Typography>
+              <input type="text" value={task.taskId} onChange={(e) => handleChange(e, "taskId")} />
+            </div>
+            <div className="mb-3">
+              <Typography className="font-bold">User Story:</Typography>
+              <input type="text" value={task.userStory} onChange={(e) => handleChange(e, "userStory")} />
+            </div>
+            <div className="mb-3">
+              <Typography className="font-bold">Priority:</Typography>
+              <input type="text" value={task.priority} onChange={(e) => handleChange(e, "priority")} />
+            </div>
+            <div className="mb-3">
+              <Typography className="font-bold">Deadline:</Typography>
+              <input type="text" value={task.deadLine} onChange={(e) => handleChange(e, "deadLine")} />
+            </div>
           </>
         )}
       </DialogBody>

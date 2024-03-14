@@ -18,7 +18,7 @@ const AddTask = () => {
     name: '',
     taskId: '',
     userStory: '',
-    estimation: '',
+    deadLine: '',
     priority: 'Medium',
   }); // State for form data
   const dispatch = useDispatch(); // Redux dispatch function
@@ -94,16 +94,16 @@ const AddTask = () => {
 
      
               <Input
-              placeholder="Estimations"
-              name="estimation"
-              value={formData.estimation}
+              placeholder="deadLine"
+              name="deadLine"
+              value={formData.deadLine}
               onChange={handleChange}
               required
               className="mb-4"
               type='datetime-local'
             />
                         <select
-              name="userStory"
+              name="priority"
               value={formData.priority}
               onChange={handleChange}
               required

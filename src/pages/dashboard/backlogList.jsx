@@ -64,7 +64,7 @@ const Backlogs = () => {
             <thead>
               <tr>
                 {/* Render table headers */}
-                {["Project Name", "Backlog Name",  ""].map(el => (
+                {["","Project Name", "Backlog Name",  ""].map(el => (
                   <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                     <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
                       {el}
@@ -83,6 +83,7 @@ const Backlogs = () => {
                 }`;
                 return (
                   <tr key={index}>
+                    <td></td>
                     {/* Render project name */}
                     <td className={className}>
                       <div className="flex items-center gap-4">
@@ -116,25 +117,8 @@ const Backlogs = () => {
                         </Link>
                       </div>
                     </td>
-             
-                    {/* Render dropdown menu */}
-                    <td className={className}>
-                      <Typography
-                        as="a"
-                        href="#"
-                        className="text-xs font-semibold text-blue-gray-600"
-                      >
-                        {/* EllipsisVerticalIcon to toggle menu */}
-                        <EllipsisVerticalIcon
-                          onClick={() => handleMenuToggle(index)} // Toggle menu on click
-                          strokeWidth={2}
-                          className="h-5 w-5 text-inherit cursor-pointer"
-                        />
-                      </Typography>
-             
-                      
-                    </td>
- 
+
+                    <td></td>
                   </tr>
                 );
               })}

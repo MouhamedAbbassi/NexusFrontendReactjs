@@ -29,7 +29,8 @@ export const routes = [
         name: "profile",
         path: "/profile",
         element: <Profile />,
-      },
+     },
+
       {
         icon: <TableCellsIcon {...icon} />,
         name: "backlog",

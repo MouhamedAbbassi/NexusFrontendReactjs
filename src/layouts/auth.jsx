@@ -19,7 +19,7 @@ export function Auth() {
       name: "profile",
       path: "/dashboard/home",
       icon: UserIcon,
-    },
+  },
     {
       name: "sign up",
       path: "/auth/sign-up",

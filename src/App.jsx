@@ -5,6 +5,7 @@ import RessourcesList from "./pages/dashboard/ressourcesList";
 import ResourceEditForm from "./pages/ressources/ResourceEditForm";
 import RessourceDetails from "./pages/ressources/RessourcesDetails";
 import RessourceForm from "./pages/ressources/RessourceForm";
+import Historique from "./pages/dashboard/historique";
 function App() {
   return (
     <Routes>
@@ -15,6 +16,8 @@ function App() {
       <Route path="/edit/:id" element={<ResourceEditForm/>} />
       <Route path="/ressources/:id" element={<RessourceDetails/>} />
       <Route path="/form" element={<RessourceForm />} />
+      <Route path="/historique" element={<Historique />} />
+
 
     </Routes>
   );

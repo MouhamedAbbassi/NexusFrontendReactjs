@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { MdEdit, MdDelete, MdHistory, MdAdd } from 'react-icons/md';
-
+//nnnnn
 function RessourcesList() {
   const [ressources, setRessources] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,8 @@ function RessourcesList() {
       setLoading(true);
       const response = await axios.get(`http://localhost:3000/historiques/${id}`);
       setHistorique(response.data);
+      history.push(`/historique/${id}`); 
+     
     } catch (error) {
       setError('Une erreur est survenue lors de la récupération de l\'historique de la ressource.');
     } finally {
@@ -130,6 +132,7 @@ function RessourcesList() {
                     <Button size="lg" color="red" ripple="light" onClick={() => handleDelete(ressource._id)} iconOnly={true} rounded={true}>
                       <MdDelete />
                     </Button>
+                    
                     <Button size="lg" color="indigo" ripple="light" onClick={() => handleHistory(ressource._id)} iconOnly={true} rounded={true}>
                       <MdHistory />
                     </Button>

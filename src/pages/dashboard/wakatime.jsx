@@ -20,9 +20,23 @@ import {
 } from "@heroicons/react/24/solid";
  import { ProfileInfoCard } from "@/widgets/cards";
 import { platformSettingsData } from "@/data";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export function Wakatime() {
-  
+  const [waka, setWaka] = useState([]); // Holds the backlog data
+/*
+  useEffect(() => {
+    axios.get('https://wakatime.com/api/v1/users/current')
+      .then(response => {
+        setWaka(response.data);
+        console.log(waka);
+      })
+      .catch(error => {
+        console.error('Error fetching backlog:', error);
+      });
+  }, []);
+  */
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">

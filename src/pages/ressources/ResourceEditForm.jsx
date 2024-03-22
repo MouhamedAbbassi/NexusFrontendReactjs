@@ -8,7 +8,8 @@ import {
   Select,
   Button,
 } from "@material-tailwind/react";
-function ResourceEditForm() {
+function ResourceEditForm(props) {
+  const { id } = props; 
   const [resource, setResource] = useState({});
   const [resourceType, setResourceType] = useState('file');
   const [fileName, setFileName] = useState('');
@@ -17,7 +18,7 @@ function ResourceEditForm() {
   const [expirationDate, setExpirationDate] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false); // Ajout de l'état de chargement
-  const { id } = useParams();
+  
 
   useEffect(() => {
     const fetchResource = async () => {
@@ -71,23 +72,22 @@ function ResourceEditForm() {
         });
       } else if (resourceType === 'link' && url) {
         await axios.put(`http://localhost:3000/ressources/link/${id}`, { link: url });
-
+  
       } else {
         throw new Error('Please select a file or enter a URL.');
       }
-
+  
       alert('Resource updated successfully!');
       setFile(null);
       setUrl('');
       setExpirationDate('');
     } catch (error) {
-      console.error('Error updating resource:', error);
+      console.error('Error updating resource:', error); // Assurez-vous que l'erreur est affichée ici
       setErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <Card>
       <CardBody>
@@ -106,7 +106,7 @@ function ResourceEditForm() {
           <div className="mb-4">
             <label className="mr-2">File:</label>
             {/* Affichez le champ de téléchargement de fichier uniquement si le type de ressource est "file" */}
-            {resourceType === 'file' && <Input type="file" accept=".pdf,.mp4,.gif,image/*" onChange={handleFileChange} />}
+            {resourceType === 'file' && <Input type="file" accept=".pdf,.mp4,.gif,link,image/*" onChange={handleFileChange} />}
             {resourceType === 'file' && fileName && <p>Current File: {fileName}</p>}
           </div>
           <div className="mb-4">
@@ -114,7 +114,8 @@ function ResourceEditForm() {
             {/* Affichez le champ d'URL uniquement si le type de ressource est "link" */}
             {resourceType === 'link' && <Input type="text" value={url} onChange={handleUrlChange} />}
           </div>
-          <Button color="indigo" type="submit">Update Resource</Button>
+          <Button color="indigo" type="submit">Update</Button>
+          
         </form>
       </CardBody>
     </Card>

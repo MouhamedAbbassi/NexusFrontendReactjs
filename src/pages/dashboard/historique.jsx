@@ -9,7 +9,7 @@ function Historique() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchHistorique = async (id )=> {
+    const fetchHistorique = async (id) => {
       try {
         const response = await axios.get(`http://localhost:3000/historiques/${id}`);
         setHistorique(response.data);
@@ -21,7 +21,7 @@ function Historique() {
       }
     };
 
-    fetchHistorique();
+    fetchHistorique(id);
   }, [id]);
 
   if (loading) {
@@ -42,8 +42,9 @@ function Historique() {
       <ul>
         {historique.map((item, index) => (
           <li key={index}>
-            <p>Date: {new Date(item.date).toLocaleString()}</p>
-            <p>Description: {item.description}</p>
+            <p>Créé le: {new Date(item.createdAt).toLocaleString()}</p>
+            {item.modifiedAt && <p>Modifié le: {new Date(item.modifiedAt).toLocaleString()}</p>}
+            {item.deleteDate && <p>Supprimé le: {new Date(item.deleteDate).toLocaleString()}</p>}
           </li>
         ))}
       </ul>

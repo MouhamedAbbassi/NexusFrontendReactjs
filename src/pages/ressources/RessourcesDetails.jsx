@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
+import { Card, CardContent, Typography, Link, Button } from '@material-ui/core'; // Assurez-vous d'importer Button depuis @material-ui/core
 
 function RessourceDetails() {
   const { id } = useParams();
@@ -42,21 +43,37 @@ function RessourceDetails() {
 
   return (
     <div>
-      <h2>Ressource Details</h2>
-      <p>ID: {ressource.filePath}</p>
-      <p>File Name: {ressource.fileName}</p>
-      <p>File Type: {ressource.fileType}</p>
-      <p>Created At: {new Date(ressource.createdAt).toLocaleString()}</p>
-
-     {/* Display the full file if 'f' is properly constructed */}
-     {ressource.fileType!="txt" ? (
-        <iframe src={`http://localhost:3000/uploads/${f}`} width='100%' height='1000'></iframe>
-      ) : (
-        <div>
-        <a href={ressource.fileName} target="_blank" rel="noopener noreferrer">Go to link</a>
-      </div>
-      
-      )}
+      <Button component={RouterLink} to="/dashboard/ressources" variant="contained" color="primary" style={{ marginBottom: '20px' }}>
+        Retour à la liste des ressources
+      </Button>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="h2" gutterBottom>
+            Ressource Details
+          </Typography>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            ID: {ressource.filePath}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            File Name: {ressource.fileName}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            File Type: {ressource.fileType}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            Created At: {new Date(ressource.createdAt).toLocaleString()}
+          </Typography>
+          {ressource.fileType !== "txt" ? (
+            <iframe src={`http://localhost:3000/uploads/${f}`} width="100%" height="500"></iframe>
+          ) : (
+            <div>
+              <Link href={ressource.fileName} target="_blank" rel="noopener noreferrer">
+                Go to link
+              </Link>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

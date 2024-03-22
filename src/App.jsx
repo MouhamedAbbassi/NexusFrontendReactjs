@@ -16,7 +16,7 @@ function App() {
       <Route path="/edit/:id" element={<ResourceEditForm/>} />
       <Route path="/ressources/:id" element={<RessourceDetails/>} />
       <Route path="/form" element={<RessourceForm />} />
-      <Route path="/historique" element={<Historique />} />
+      <Route path="/historiques/:id" element={<Historique />} />
 
 
     </Routes>

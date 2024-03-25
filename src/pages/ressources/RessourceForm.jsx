@@ -78,8 +78,8 @@ function RessourceForm() {
           <div className="flex items-center mb-4">
             <label className="mr-2">Resource Type:</label>
             <Select value={resourceType} onChange={handleResourceTypeChange}>
-              <option value="file">Upload File</option>
-              <option value="link">Add URL</option>
+            <option value="file" onClick={() => setResourceType('file')}>Upload File</option>
+  <option value="link" onClick={() => setResourceType('link')}>Add URL</option>
             </Select>
           </div>
           {resourceType === 'file' && (

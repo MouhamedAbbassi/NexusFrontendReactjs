@@ -25,7 +25,7 @@ function RessourcesList() {
   const [editingResourceId, setEditingResourceId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
-  const { id } = useParams();
+  const { resourceId } = useParams();
   const [searchDate, setSearchDate] = useState(''); // Ajoutez l'état de la recherche par date
   const [searchType, setSearchType] = useState(''); // Ajoutez l'état de la recherche par type
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,12 +68,11 @@ function RessourcesList() {
     }
   };
 
-  const handleHistory = async (id) => {
+  const handleHistory = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/historiques/${id}`);
+      const response = await axios.get(`http://localhost:3000/historiques/byResourceId/${resourceId}`);
       setHistorique(response.data);
-      history.push(`/historique/${id}`);
     } catch (error) {
       setError('Une erreur est survenue lors de la récupération de l\'historique de la ressource.');
     } finally {
@@ -140,7 +139,7 @@ function RessourcesList() {
           placeholder="Enter search term"
         />
        
-        <button type="submit">Search</button>
+        <button type="submit">Filter</button>
       </form>
 
 
@@ -190,10 +189,11 @@ function RessourcesList() {
                     <MdDelete />
                     </Button>
                     <Link to={`/historiques/${ressource._id}`}>
-                    <Button size="lg" color="indigo" ripple="light" onClick={() => handleHistory(ressource._id)} iconOnly={true} rounded={true}>
-                      <MdHistory />
-                    </Button>
-                    </Link>
+  <Button size="lg" color="indigo" ripple="light" iconOnly={true} rounded={true}>
+    <MdHistory />
+  </Button>
+</Link>
+
 
                   </div>
                 </div>

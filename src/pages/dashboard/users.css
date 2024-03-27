@@ -1,0 +1,63 @@
+/* Users.css */
+.userStatus {
+    display: inline-block;
+    width: 50px; /* Largeur du rectangle */
+    height: 20px; /* Hauteur du rectangle */
+    border-radius: 5px; /* Bord arrondi du rectangle */
+    margin-right: 6px; /* Espacement entre le rectangle et le texte */
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px; /* Centrage vertical du texte */
+  }
+  
+  .userOnline {
+    background-color: #4caf50; /* Couleur verte pour l'utilisateur connecté */
+    color: white;
+  }
+  
+  .userOffline {
+    background-color: #f44336; /* Couleur rouge pour l'utilisateur non connecté */
+    color: white;
+  }
+  /* styles.css */
+
+  .button-container {
+    display: flex; /* Utiliser Flexbox pour aligner les boutons */
+    gap: 10px; /* Espacement horizontal entre les boutons */
+  }
+  
+
+.edit-button {
+  color: black !important;
+  border-color: black !important;
+}
+
+.delete-button {
+  color: black !important;
+  border-color: black !important;
+}
+
+.view-button {
+  color: black !important;
+  border-color: black !important;
+}
+
+/* styles.css */
+
+
+
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc; /* Couleur de fond par défaut */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: bold;
+  color: white;
+}
+

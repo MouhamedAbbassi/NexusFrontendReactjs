@@ -51,25 +51,33 @@ export function SignIn() {
     return () => clearTimeout(timeout);
   }, [email, password]);
 
+
   const handleSignIn = async () => {
     try {
       const response = await axios.post('http://localhost:3000/users/login', {
         email,
         password,
       });
-
+  
       console.log('SignIn response:', response.data);
-      localStorage.setItem('token', response.data.token);
-
+     const token = response.data.token;
+  
+      // Inclure le token JWT dans le header de la requête axios
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    
+      localStorage.setItem('token', token);
+  
       if (response.data.role === 'admin') {
         navigate('/dashboard/home');
       } else {
         navigate('/dashboard/profile');
       }
+   
     } catch (error) {
       console.error('SignIn error:', error);
     }
-  };
+  }
+  
 
   function loginWithGithub() {
     window.location.assign("http://github.com/login/oauth/authorize?client_id=" + GITHUB_CLIENT_ID)

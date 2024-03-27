@@ -48,17 +48,18 @@ function ChangerPassword() {
             <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Changer le mot de passe</h2>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <input
-                type="email"
-                value={email}
+               // type="email"
+               value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Entrez votre email"
                 required
                 style={{ padding: '10px', margin: '10px 0', borderRadius: '5px', width: '400px' }}
+        
               />
               <input
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+               onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Nouveau mot de passe"
                 required
                 style={{ padding: '10px', margin: '10px 0', borderRadius: '5px', width: '400px' }}

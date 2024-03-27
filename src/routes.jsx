@@ -6,9 +6,10 @@ import {
   ServerStackIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home,Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import Backlogs from "./pages/dashboard/backlogList";
+import Users from "./pages/dashboard/users";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -24,6 +25,13 @@ export const routes = [
         path: "/home",
         element: <Home />,
       },
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "users",
+        path: "/users",
+        element: <Users />,
+      },
+      
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
@@ -49,6 +57,8 @@ export const routes = [
         path: "/notifications",
         element: <Notifications />,
       },
+
+      
     ],
   },
   {
@@ -70,5 +80,6 @@ export const routes = [
     ],
   },
 ];
+
 
 export default routes;

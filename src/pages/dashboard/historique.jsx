@@ -11,6 +11,7 @@ import {
   Paper,
   makeStyles,
   Button,
+  Modal,
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +27,20 @@ const useStyles = makeStyles((theme) => ({
   backButton: {
     marginTop: theme.spacing(2),
   },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalPaper: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  image: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
 }));
 
 function Historique() {
@@ -34,6 +49,8 @@ function Historique() {
   const [historique, setHistorique] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedHistorique, setSelectedHistorique] = useState(null);
 
   useEffect(() => {
     const fetchHistorique = async () => {
@@ -50,6 +67,26 @@ function Historique() {
 
     fetchHistorique();
   }, [resourceId]);
+
+  const handleEditHistorique = (historique) => {
+    setSelectedHistorique(historique);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedHistorique(null);
+    setIsEditModalOpen(false);
+  };
+
+  const updateHistoriqueEntry = async (id, updatedData) => {
+    try {
+      const response = await axios.put(`http://localhost:3000/historiques/${id}`, updatedData);
+      console.log('Historique mis à jour:', response.data);
+      closeEditModal();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de l\'historique:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -89,7 +126,14 @@ function Historique() {
               <ListItemText primary={`Créé le: ${new Date(item.createdAt).toLocaleString()}`} />
               {item.modifiedAt && <ListItemText primary={`Modifié le: ${new Date(item.modifiedAt).toLocaleString()}`} />}
               {item.deleteDate && <ListItemText primary={`Supprimé le: ${new Date(item.deleteDate).toLocaleString()}`} />}
+              <Button onClick={() => handleEditHistorique(item)}>Details</Button>
             </ListItem>
+            {item.previousContent && (
+              <div>
+                <Typography variant="subtitle1">Contenu précédent:</Typography>
+                <iframe src={item.previousContent} alt="Previous Content" className={classes.image} />
+              </div>
+            )}
             {index < historique.length - 1 && <Divider />}
           </div>
         ))}
@@ -103,6 +147,21 @@ function Historique() {
       >
         Retour à la liste des ressources
       </Button>
+      <Modal
+        open={isEditModalOpen}
+        onClose={closeEditModal}
+        className={classes.modal}
+      >
+        <div className={classes.modalPaper}>
+          <Typography variant="h6" gutterBottom>
+            Détails
+          </Typography>
+          {selectedHistorique && (
+            // Remplacez ce composant avec votre formulaire de modification
+            <pre>{JSON.stringify(selectedHistorique, null, 2)}</pre>
+          )}
+        </div>
+      </Modal>
     </Paper>
   );
 }

@@ -21,6 +21,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import store from './reduxToolkit/store';
 import { Provider } from 'react-redux';
+import WrapperProject from "./pages/context/serviceProject";
+import WrapperMembers from "./pages/context/serviceMembre";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   
@@ -31,8 +33,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ThemeProvider>
         <MaterialTailwindControllerProvider>
            <DndProvider backend={HTML5Backend}>
-             <ChakraProvider>
-               <App />
+              <ChakraProvider>
+                <WrapperProject>
+                  <WrapperMembers>
+                    <App />
+                  </WrapperMembers>
+                </WrapperProject>
              </ChakraProvider>
            </DndProvider>
         </MaterialTailwindControllerProvider>

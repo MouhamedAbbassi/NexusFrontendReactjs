@@ -5,11 +5,14 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  ChatBubbleLeftIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import Backlogs from "./pages/dashboard/backlogList";
 import Wakatime from "./pages/dashboard/wakatime";
+import Membres from "./pages/membres/Membres";
+import Projects from "./pages/projects/Project";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -26,9 +29,9 @@ export const routes = [
         element: <Home />,
       },
       {
-        icon: <UserCircleIcon {...icon} />,
-        name: "profile",
-        path: "/profile",
+        icon: <ChatBubbleLeftIcon {...icon} />,
+        name: "Inbox",
+        path: "/inbox",
         element: <Profile />,
       },
       {
@@ -55,15 +58,16 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
+        name: "membres",
+        path: "/membres",
+        element: <Membres />,
       },
+ 
       {
         icon: <InformationCircleIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-        element: <Notifications />,
+        name: "project",
+        path: "/projects",
+        element: <Projects />,
       },
     ],
   },

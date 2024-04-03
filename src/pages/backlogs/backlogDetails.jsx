@@ -178,9 +178,9 @@ const closeModal = () => {
   setOpen(false);
 };
   return (
-    <div className="m-1 p-16 flex flex-col gap-12">
-      <Card className='mx-28'>
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6 mx-16" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="m-1 p-4 sm:p-8 md:p-16 flex flex-col gap-4 sm:gap-8">
+    <Card className='mx-4 sm:mx-auto sm:w-11/12 md:w-full lg:w-10/12 xl:w-9/12'>
+    <CardHeader variant="gradient" color="gray" className="mb-4 sm:mb-8 p-4 sm:p-6 mx-2 sm:mx-4" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" color="white">Backlog Table</Typography>
           <Link to="/dashboard/backlog">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 m-3 ">
@@ -189,7 +189,7 @@ const closeModal = () => {
           </Link>
         </CardHeader>
         <CardBody>
-          <table className="w-full min-w-[640px] table-auto mx-10">
+        <table className="w-full min-w-[320px] sm:min-w-[640px] table-auto mx-2 sm:mx-4">
             <thead>
               <tr>
                 {["", "Backlog Name", "Members", "Completion"].map((el, index) => (
@@ -249,12 +249,13 @@ const closeModal = () => {
         </Link>
       </CardHeader>
       <Container maxW="1400px">
-        <Flex justify="space-beween" height="70vh" className='text-blue-gray-400 font-bold' align="center">
+      <Flex justify="space-between" direction={{ base: "column", md: "row" }} className='text-blue-gray-400 font-bold' align="center">
           {/* Render todo stack */}
           
           <Stack width="300px" className="m-1">
             <Heading fontSize="2xl" fontFamily="sans-serif" color="black" textAlign="center">Todo</Heading>
-            <List
+            <List 
+                    style={{overflowY: "auto",maxHeight: "500px",scrollbarWidth: "thin",}}
               p="4"
               minH="70vh"
               boxShadow="xl"
@@ -265,7 +266,7 @@ const closeModal = () => {
               
             >
               {todoTasks && todoTasks.map((task, index) => (
-                <Task
+                <Task 
                   key={task._id}
                   item={task}
                   onDropTask={() => moveTaskToStack(task, "Todo")}
@@ -280,7 +281,7 @@ const closeModal = () => {
           {/* Render in progress stack */}
           <Stack width="300px" className="m-1">
             <Heading fontSize="2xl" fontFamily="sans-serif" color="black" textAlign="center">Progressing</Heading>
-            <List
+            <List style={{ maxHeight: "500px", overflowY: "auto" , scrollbarWidth: "thin"}}
               p="4"
               minH="70vh"
               boxShadow="xl"
@@ -305,7 +306,7 @@ const closeModal = () => {
           {/* Render testing stack */}
           <Stack width="300px" className="m-1">
             <Heading fontSize="2xl" fontFamily="sans-serif" color="black" textAlign="center">Testing</Heading>
-            <List
+            <List style={{ maxHeight: "500px", overflowY: "auto", scrollbarWidth: "thin" }}
               p="4"
               minH="70vh"
               boxShadow="xl"
@@ -330,7 +331,7 @@ const closeModal = () => {
           {/* Render done stack */}
           <Stack width="300px" className="m-1">
             <Heading fontSize="2xl" fontFamily="sans-serif" color="black" textAlign="center">Done</Heading>
-            <List
+            <List style={{ maxHeight: "500px", overflowY: "auto" , scrollbarWidth: "thin"}}
               p="4"
               minH="70vh"
               boxShadow="xl"
@@ -355,7 +356,7 @@ const closeModal = () => {
           {/* Render blocked stack */}
           <Stack width="300px" className="m-1" variant="gradient" color="gray">
             <Heading fontSize="2xl" fontFamily="sans-serif" color="black" textAlign="center">Blocked</Heading>
-            <List
+            <List style={{ maxHeight: "500px", overflowY: "auto" , scrollbarWidth: "thin"}}
               p="4"
               minH="70vh"
               boxShadow="xl"

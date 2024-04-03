@@ -68,7 +68,7 @@ export function SignIn() {
       localStorage.setItem('token', token);
   
       if (response.data.role === 'admin') {
-        navigate('/dashboard/home');
+        navigate('/admindashboard/users');
       } else {
         navigate('/dashboard/profile');
       }

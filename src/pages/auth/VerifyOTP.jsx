@@ -52,7 +52,7 @@ function VerifyOTP({ email }) {
         resetToken,
       });
       console.log(response.data);
-      navigate(`/auth/change-password`);
+      navigate(`/auth/change-password`,{state: {email}});
     } catch (error) {
       console.error('Error verifying OTP:', error);
       setError('Invalid OTP. Please try again.');

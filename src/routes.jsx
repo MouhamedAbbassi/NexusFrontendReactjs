@@ -25,13 +25,7 @@ export const routes = [
         path: "/home",
         element: <Home />,
       },
-      {
-        icon: <UserCircleIcon {...icon} />,
-        name: "users",
-        path: "/users",
-        element: <Users />,
-      },
-      
+    
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
@@ -81,5 +75,64 @@ export const routes = [
   },
 ];
 
+export const adminRoutes = [
+  {
+    layout: "admindashboard",
+    pages: [
+      {
+        icon: <HomeIcon {...icon} />,
+        name: "dashboard",
+        path: "/home",
+        element: <Home />,
+      },
+      
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "users",
+        path: "/users",
+        element: <Users />,
+      },
+
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "backlog",
+        path: "/backlog",
+        element: <Backlogs />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "tables",
+        path: "/tables",
+        element: <Tables />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "notifications",
+        path: "/notifications",
+        element: <Notifications />,
+      },
+
+      
+    ],
+  },
+  {
+    title: "auth pages",
+    layout: "auth",
+    pages: [
+      {
+        icon: <ServerStackIcon {...icon} />,
+        name: "sign in",
+        path: "/sign-in",
+        element: <SignIn />,
+      },
+      {
+        icon: <RectangleStackIcon {...icon} />,
+        name: "sign up",
+        path: "/sign-up",
+        element: <SignUp />,
+      },
+    ],
+  },
+]
 
 export default routes;

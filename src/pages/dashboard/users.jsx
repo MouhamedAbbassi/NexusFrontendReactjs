@@ -17,11 +17,12 @@ import {
 import axios from 'axios';
 import './users.css'
 import jsPDF from 'jspdf';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export function Users() {
-  
+  const navigate = useNavigate();
   const [selectedUser, setSelectedUser] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
   const [error, setError] = useState('');
@@ -71,7 +72,7 @@ useEffect(() => {
 const handleLogout = async (navigate) => {
   try {
     const token = localStorage.getItem('token');
-    console.log('Token from localStorage:', token); // Vérifiez ici si le token est récupéré du localStorage
+    console.log('Token from localStorage:', token); 
 
     if (!token) {
       console.log('Token not found in localStorage');
@@ -80,12 +81,14 @@ const handleLogout = async (navigate) => {
 
     const response = await axios.post('http://localhost:3000/users/logout', { token });
     console.log('Logout response:', response.data);
+   if (response.data) {
+    
+     localStorage.removeItem('token');
+     navigate('/auth/sign-in');
+     
+   }
 
-    localStorage.removeItem('token');
-
-    if (typeof navigate === 'function') {
-      navigate('/auth/sign-in');
-    }
+   
   } catch (error) {
     console.error('Logout error:', error);
   }
@@ -235,7 +238,7 @@ const handleLogout = async (navigate) => {
         />
 <Button
         variant="contained"
-        onClick={handleLogout}
+        onClick={() => {handleLogout(navigate)}}
         style={{ backgroundColor: 'black', color: 'white', marginRight: '10px' }}
       >
         Logout

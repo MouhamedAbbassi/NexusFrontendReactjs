@@ -6,10 +6,12 @@ import { SignIn } from './pages/auth';
 import EmailSend from './pages/auth/EmailSend';
 import VerifyOTP from './pages/auth/VerifyOTP';
 import ChangePassword from './pages/auth/ChangePassword';
+import AdminDashboard from './layouts/adminDashboard';
 function App() {
   return (
     <Routes>
       <Route path="/dashboard/*" element={<Dashboard />} />
+      <Route path="/admindashboard/*" element={<AdminDashboard />} />
       <Route path="/auth/*" element={<Auth />} />
       <Route path="/auth/sign-in" element={<SignIn />} />
       <Route path="/auth/forgot-password" element={<EmailSend />} /> 

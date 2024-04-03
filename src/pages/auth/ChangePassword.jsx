@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import ReCAPTCHA from 'react-google-recaptcha'; // Import the reCAPTCHA component
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function ChangerPassword() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showVerifyOTP, setShowVerifyOTP] = useState(false);
-  const navigate = useNavigate();
 
-  // Handle reCAPTCHA onChange event
+  // Set the email value from state on component mount
+  useEffect(() => {
+    if (state && state.email) {
+      setEmail(state.email);
+    }
+  }, [state]);
+
   const onChange = (value) => {
     console.log("Captcha value:", value);
     // Here you can use the value if needed
@@ -19,19 +27,16 @@ function ChangerPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Your existing password validation logic
     if (newPassword !== confirmPassword) {
       setMessage('Les mots de passe ne correspondent pas');
       return;
     }
     try {
-      // Your axios request
       const response = await axios.put('http://localhost:3000/users/reset-password', { email, newPassword });
       setMessage(response.data.message);
       setShowVerifyOTP(true);
-      navigate('/signin');
+      navigate('/auth/sign-in');
     } catch (error) {
-      // Your error handling logic
       if (error.response) {
         setMessage(error.response.data.message);
       } else {
@@ -47,19 +52,11 @@ function ChangerPassword() {
           <div>
             <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Changer le mot de passe</h2>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <input
-               // type="email"
-               value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Entrez votre email"
-                required
-                style={{ padding: '10px', margin: '10px 0', borderRadius: '5px', width: '400px' }}
-        
-              />
+         
               <input
                 type="password"
                 value={newPassword}
-               onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Nouveau mot de passe"
                 required
                 style={{ padding: '10px', margin: '10px 0', borderRadius: '5px', width: '400px' }}
@@ -79,7 +76,6 @@ function ChangerPassword() {
           </div>
         ) : (
           <div>
-            {/* Your component for verifying OTP */}
             <button onClick={() => navigate('/')} style={{ padding: '10px', borderRadius: '5px', backgroundColor: 'black', color: 'white', border: 'none', width: '400px', marginTop: '10px' }}>Retour à l'accueil</button>
           </div>
         )}

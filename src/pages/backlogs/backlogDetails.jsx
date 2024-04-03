@@ -6,6 +6,7 @@ import {
   CardBody,
   Typography,
   Progress,
+  Button,
 } from "@material-tailwind/react";
 import { Link } from 'react-router-dom';
 import { Container, Stack, Flex, List, Heading } from "@chakra-ui/react";
@@ -192,7 +193,7 @@ const closeModal = () => {
         <table className="w-full min-w-[320px] sm:min-w-[640px] table-auto mx-2 sm:mx-4">
             <thead>
               <tr>
-                {["", "Backlog Name", "Members", "Completion"].map((el, index) => (
+                {["", "Backlog Name",  "Completion",""].map((el, index) => (
                   <th key={index} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                     <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">{el}</Typography>
                   </th>
@@ -212,7 +213,7 @@ const closeModal = () => {
                       </Typography>
                   </div>
                 </td>
-                <td></td>
+                
                 <td className="py-3 px-5">
                   <div className="w-10/12">
                     <Typography variant="small" className="mb-1 block text-xs font-medium text-blue-gray-600">
@@ -234,6 +235,13 @@ const closeModal = () => {
                       style={{ width: '150px' }}
                     />
                   </div>
+                </td>
+                <td>
+                <Link to={`/dashboard/tasksList/${id}`}>
+                        <Button variant="outlined" size="sm">
+                        view task list
+                        </Button>
+                      </Link>
                 </td>
               </tr>
             </tbody>

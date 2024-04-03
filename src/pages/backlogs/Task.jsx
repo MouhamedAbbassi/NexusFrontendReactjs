@@ -45,6 +45,12 @@ const Task = ({ item, type, onDropTask, index, status, openModal }) => {
     openModal(item.id); // Pass task ID to openModal function
   };
 
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      deleteTask(item._id);
+    }
+  };
+
   return (
     <ListItem
       p="2"
@@ -55,8 +61,6 @@ const Task = ({ item, type, onDropTask, index, status, openModal }) => {
       ref={dragRef}
       borderColor={borderColor} // Set border color dynamically
       borderWidth="2px"
-     
-       // Handle click event
     >
       <div style={{ display: "flex", justifyContent: "space-between" }} className="mb-6">
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -78,8 +82,8 @@ const Task = ({ item, type, onDropTask, index, status, openModal }) => {
           viewBox="0 0 16 16"
           fill="red"
           className="w-4 h-4 mr-3 "
-          onClick={() => deleteTask(item._id)}
-          style={{ cursor: "pointer",width: '30', height: '20' }}
+          onClick={handleDelete}
+          style={{ cursor: "pointer", width: '30', height: '20' }}
         >
           <path
             fillRule="evenodd"
@@ -91,11 +95,11 @@ const Task = ({ item, type, onDropTask, index, status, openModal }) => {
 
       </div>
       <svg onClick={handleClick}
-      style={{ width: '50', height: '30',cursor: "pointer",marginLeft:'150'  }}
+        style={{ width: '50', height: '30', cursor: "pointer", marginLeft: '150' }}
         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={borderColor}
-         class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-        </svg>
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+      </svg>
     </ListItem>
   );
 };

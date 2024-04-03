@@ -54,28 +54,34 @@ const Backlogs = () => {
     
     <div className="mt-12 mb-8 flex flex-col gap-12 mx-6">
       <Card>
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
+        <CardHeader variant="gradient" color="gray" className="mb-8 p-6" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" color="white">
             Backlog Table
           </Typography>
+          <Link to={`/dashboard/addBacklog`}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="mr-8 w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </Link>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
-            <thead>
-              <tr>
-                {/* Render table headers */}
-                {["","Project Name", "Backlog Name",  ""].map(el => (
-                  <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
-                    <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
+          <thead>
+  <tr>
+    {/* Render table headers */}
+    {["","Project Name", "Backlog Name","Description" , ""].map((el, index) => (
+      <th key={index} className="border-b border-blue-gray-50 py-3 px-5 text-left">
+        <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
+          {el}
+        </Typography>
+      </th>
+    ))}
+  </tr>
+</thead>
+
             <tbody>
               {/* Render backlog items */}
-              {backlog.map(({ _id,name, projectName }, index) => {
+              {backlog.map(({ _id,name, projectName,description }, index) => {
                  const className = `py-3 px-5 ${
                   index === backlog.length - 1
                     ? ""
@@ -113,6 +119,21 @@ const Backlogs = () => {
                           className="font-bold"
                         >
                           {name}
+                        </Typography> 
+                        </Link>
+                      </div>
+                    </td>
+
+                    <td className={className}>
+                      <div className="flex items-center gap-4">
+ 
+                      <Link to={`/backlog/details/${backlog[index]._id}/`} >
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-bold"
+                        >
+                          {description}
                         </Typography> 
                         </Link>
                       </div>

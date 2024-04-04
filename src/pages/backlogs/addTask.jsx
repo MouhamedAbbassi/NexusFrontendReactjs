@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -10,6 +10,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { addTaskAsync } from '../../reduxToolkit/reducers/slice';
 
 const AddTask = () => {
@@ -21,7 +22,25 @@ const AddTask = () => {
     deadLine: '',
     priority: 'Medium',
   });
+  const [error, setError] = useState('');
+  const [lastTaskId, setLastTaskId] = useState('');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchLastTaskId = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/backlog/${id}/tasks`);
+        const tasks = response.data;
+        if (tasks.length > 0) {
+          const lastTask = tasks[tasks.length - 1];
+          setLastTaskId(lastTask.taskId);
+        }
+      } catch (error) {
+        console.error('Error fetching last task ID:', error);
+      }
+    };
+    fetchLastTaskId();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,8 +59,16 @@ const AddTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(addTaskAsync({ id, body: formData }));
-    window.location.href = `/backlog/details/${id}/`;
+    try {
+      await axios.post(`http://localhost:3000/backlog/${id}/tasks`, formData);
+      window.location.href = `/backlog/details/${id}/`;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError("Task ID already exists");
+      } else {
+        setError('An error occurred while adding the task.');
+      }
+    }
   };
 
   return (
@@ -59,6 +86,7 @@ const AddTask = () => {
         </CardHeader>
         <CardBody className="p-4 md:p-6 flex justify-center">
           <form onSubmit={handleSubmit} className='w-full md:w-1/2'>
+   
             <Input
               placeholder="Task Name"
               name="name"
@@ -69,8 +97,9 @@ const AddTask = () => {
               type='text'
             />
             <br />
+
             <Input
-              placeholder="Task id format x.x.x"
+              placeholder={`Task ID format x.x.x`}
               name="taskId"
               value={formData.taskId}
               onChange={handleChange}
@@ -78,7 +107,13 @@ const AddTask = () => {
               className="mb-4"
               type='text'
             />
-            <br />
+                        {lastTaskId && (
+              <Typography variant="subtitle1"color='green' className="mb-1 mt-1 ml-2">
+               <b> The Last TaskId Added is : {lastTaskId}</b>
+              </Typography>
+            )}
+            {error && <Typography variant="caption" color="red" className="mb-2 ml-2">{error}</Typography>}
+           
             <Input
               placeholder="User Story"
               name="userStory"

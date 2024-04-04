@@ -237,7 +237,7 @@ const closeModal = () => {
                   </div>
                 </td>
                 <td>
-                <Link to={`/dashboard/tasksList/${id}`}>
+                <Link to={`/dashboard/tasksList/${id}`  }>
                         <Button variant="outlined" size="sm">
                         view task list
                         </Button>

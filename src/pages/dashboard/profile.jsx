@@ -184,9 +184,7 @@ export function Profile() {
                 <Typography variant="body" color="blue-gray" className="mb-2 font-bold">
                   Phone Number: {user.phoneNumber}
                 </Typography>
-                <Typography variant="body" color="blue-gray" className="mb-2 font-bold">
-                  Projects: {user.projects ? user.projects.length : 0}
-                </Typography>
+                
               </div>
               <Button
                 variant="contained"

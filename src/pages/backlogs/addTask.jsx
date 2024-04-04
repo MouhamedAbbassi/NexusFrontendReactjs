@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import {
   Card,
   CardHeader,
@@ -10,7 +10,6 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { Link } from 'react-router-dom';
-import { addTaskAsync } from '../../reduxToolkit/reducers/slice';
 
 const AddTask = () => {
   const { id } = useParams();
@@ -21,7 +20,7 @@ const AddTask = () => {
     deadLine: '',
     priority: 'Medium',
   });
-  const dispatch = useDispatch();
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,8 +39,16 @@ const AddTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(addTaskAsync({ id, body: formData }));
-    window.location.href = `/backlog/details/${id}/`;
+    try {
+      await axios.post(`http://localhost:3000/backlog/${id}/tasks`, formData);
+     // window.location.href = `/backlog/details/${id}/`;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError("Task ID already exists");
+      } else {
+        setError('An error occurred while adding the task.');
+      }
+    }
   };
 
   return (
@@ -78,6 +85,7 @@ const AddTask = () => {
               className="mb-4"
               type='text'
             />
+            {error && <Typography variant="caption" color="red" className="mb-2">{error}</Typography>}
             <br />
             <Input
               placeholder="User Story"

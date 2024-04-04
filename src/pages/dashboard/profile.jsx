@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Avatar, Typography, Card, CardBody, Button } from "@material-tailwind/react";
-import { useNavigate } from 'react-router-dom'; // Importer useNavigate depuis react-router-dom
+import { useNavigate } from 'react-router-dom';
 
 export function Profile() {
   const [user, setUser] = useState(null);
   const [image, setImage] = useState(null);
-  
-  const navigate = useNavigate(); // Initialiser la fonction navigate pour la redirection
+  const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -20,6 +20,11 @@ export function Profile() {
             },
           });
           setUser(response.data);
+          // Charger l'image depuis le stockage local s'il y en a une
+          const savedImage = localStorage.getItem('profileImage');
+          if (savedImage) {
+            setImage(savedImage);
+          }
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -30,50 +35,84 @@ export function Profile() {
   }, []);
 
   const handleImageUpload = async (event) => {
+    const token = localStorage.getItem('token');
     const file = event.target.files[0];
     const formData = new FormData();
     formData.append('image', file);
 
-    console.log('File selected:', file);
-    
     try {
-      const token = localStorage.getItem('token');
-      console.log('Token:', token);
-
       const response = await axios.post('http://localhost:3000/users/upload', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Upload response:', response.data);
-      setImage(response.data.url);
+
+      if (response.data) {
+        const imageURL = URL.createObjectURL(file);
+        setImage(imageURL);
+        setShowSaveConfirmation(true);
+        // Enregistrer l'URL de l'image dans le stockage local
+        localStorage.setItem('profileImage', imageURL);
+      } else {
+        console.error('FileName not found in upload response');
+      }
     } catch (error) {
       console.error('Error uploading image:', error);
     }
   };
 
+  const saveImage = async (file) => {
+    try {
+      const token = localStorage.getItem('token');
+      const formData = new FormData();
+      formData.append('image', file);
+  
+      const response = await axios.post('http://localhost:3000/users/save-image', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log('Save image response:', response.data);
+    } catch (error) {
+      console.error('Error saving image:', error); // Afficher les détails de l'erreur dans la console
+    }
+  };
+  
+
+  const handleSaveConfirmation = () => {
+    saveImage(image);
+    setShowSaveConfirmation(false);
+  };
+
+  const handleCancelSave = () => {
+    setImage(null);
+    setShowSaveConfirmation(false);
+    // Supprimer l'image du stockage local lorsque l'utilisateur annule
+    localStorage.removeItem('profileImage');
+  };
 
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('token');
-      console.log('Token from localStorage:', token); 
-
       if (!token) {
         console.log('Token not found in localStorage');
         return;
       }
-
+  
       const response = await axios.post('http://localhost:3000/users/logout', { token });
       console.log('Logout response:', response.data);
       if (response.data) {
-        localStorage.removeItem('token');
-        navigate('/auth/sign-in'); // Rediriger vers la page de connexion après la déconnexion
+   
+        navigate('/auth/sign-in');
       }
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
+  
 
   return (
     <div className="mx-auto mt-8 px-4 lg:px-8">
@@ -106,11 +145,33 @@ export function Profile() {
                   </div>
                 </div>
                 <div>
-                 <input type="file" onChange={handleImageUpload} accept="image/*" className="hidden" id="image-upload" style={{ cursor: 'pointer' }} />
-      <label htmlFor="image-upload">
-        Upload Image
-      </label>
-      {image && <img src={image} alt="Uploaded" className="mt-2 max-w-full h-auto" />}
+                  <input type="file" onChange={handleImageUpload} accept="image/*" className="hidden" id="image-upload" style={{ cursor: 'pointer' }} />
+                  <label htmlFor="image-upload">
+                    Upload Image
+                  </label>
+  
+                  {showSaveConfirmation && (
+                    <div className="flex gap-4 mt-2">
+                      <Button
+                        variant="contained"
+                        onClick={handleSaveConfirmation}
+                        style={{ backgroundColor: 'green', color: 'white' }}
+                      >
+                        Save Image
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancelSave}
+                        style={{ borderColor: 'red', color: 'red' }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+  
+                  {image && (
+                    <img  />
+                  )}
                 </div>
               </div>
               <div>
@@ -129,7 +190,7 @@ export function Profile() {
               </div>
               <Button
                 variant="contained"
-                onClick={handleLogout} // Appeler la fonction de logout lorsqu'on clique sur le bouton
+                onClick={handleLogout}
                 style={{ backgroundColor: 'black', color: 'white', marginRight: '10px' }}
               >
                 Logout

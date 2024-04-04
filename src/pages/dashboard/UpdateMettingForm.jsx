@@ -13,6 +13,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
     startDateTime: '',
     endDateTime: '',
     attendees: [{ email: '' }],
+    sprints: '',
   });
   const [isModalOpen, setIsModalOpen] = useState(true);
 
@@ -31,6 +32,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
         startDateTime: meeting.startDateTime,
         endDateTime: meeting.endDateTime,
         attendees: meeting.attendees,
+        sprints: meeting.sprints
       });
     } catch (error) {
       console.error(`Error fetching meeting with ID ${meetingId}:`, error);

@@ -3,6 +3,7 @@ import axios from 'axios';
 import DeleteSprint from './DeleteSprint.jsx';
 import UpdateSprint from './UpdateSprint.jsx';
 import AddSprint from './AddSprint.jsx'; 
+import { Link } from 'react-router-dom';
 
 
 const SprintList = () => {
@@ -49,8 +50,11 @@ const SprintList = () => {
     setShowAddForm(false);
   };
 
+  
+
   return (
     <div>
+     
      <button
   onClick={() => handleAddSprintClick()}
   className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer mb-4"
@@ -60,8 +64,10 @@ const SprintList = () => {
 
       {showAddForm && <AddSprint onSprintAdded={() => handleAddSprintClose()} onClose={handleAddSprintClose} />}
       {sprints.map((sprint) => (
+        
         <div key={sprint._id} className="border p-4 mb-4 rounded">
           <h2 className="text-2xl font-bold mb-2">{sprint.nom}</h2>
+          
           <DeleteSprint sprintId={sprint._id} onDelete={() => handleDelete(sprint._id)} />&nbsp;
           {selectedSprintId === sprint._id ? (
               <UpdateSprint sprintId={sprint._id} onUpdate={handleUpdateComplete} />

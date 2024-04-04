@@ -33,7 +33,7 @@ function App() {
         <Route path="/meet/update/:id" element={<UpdateMeetingForm />} />
         <Route path="/sprint/delete/:id" element={<DeleteSprint />} />
         <Route path="/sprint/update/:id" element={<UpdateSprint />} />
-        <Route path="/sprint/meet/list" element={<AllMeetingsList />} />
+        <Route path="/meet/list" element={<AllMeetingsList />} />
         <Route path="/backlog/details/:id" element={<BacklogDetails />} />
         <Route path="/backlog/details/addTask/:id" element={<AddTask />} />
         <Route path="/backlog/details/modalTasks" element={<ModalTasks />} />

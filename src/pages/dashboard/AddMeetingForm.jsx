@@ -1,20 +1,21 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
+const AddMeetingForm = ({ onClose, onMeetingAdded }) => {
   const generateLinkMeet = () => {
-  const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const charactersLength = characters.length;
-  for (let i = 0; i < 4; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 4; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
   const [meetingData, setMeetingData] = useState({
     summary: '',
-     linkMeet :generateLinkMeet(),
+    linkMeet: generateLinkMeet(),
     description: '',
     startDateTime: '',
     endDateTime: '',
@@ -23,6 +24,7 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
   });
 
   const [sprints, setSprints] = useState([]); // Ajoutez un état pour stocker les sprints récupérés depuis le backend
+  const [errors, setErrors] = useState({}); // Ajoutez un état pour les erreurs de validation
 
   useEffect(() => {
     // Fonction pour récupérer tous les sprints depuis le backend
@@ -37,13 +39,40 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
 
     fetchSprints(); // Appel de la fonction de récupération des sprints au chargement du composant
   }, []);
-  
 
-  const handleSprintSelect = (e) => {
-    setMeetingData({
-      ...meetingData,
-      sprints: e.target.value, // Met à jour le sprint sélectionné dans l'état local
-    });
+  const validateForm = () => {
+    const errors = {};
+
+    if (!meetingData.summary.trim()) {
+      errors.summary = 'Summary is required';
+    }
+    if (!meetingData.description.trim()) {
+      errors.description = 'Description is required';
+    }
+
+    if (!meetingData.startDateTime) {
+      errors.startDateTime = 'Start date and time are required';
+    }
+
+    if (!meetingData.endDateTime) {
+      errors.endDateTime = 'End date and time are required';
+    } else if (meetingData.endDateTime <= meetingData.startDateTime) {
+      errors.endDateTime = 'End date and time must be after start date and time';
+    }
+
+    const invalidEmails = meetingData.attendees.filter(attendee => !validateEmail(attendee.email));
+    if (invalidEmails.length > 0) {
+      errors.attendees = 'Invalid email address';
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateEmail = (email) => {
+    // Expression régulière pour valider une adresse e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleChange = (e) => {
@@ -51,6 +80,13 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
     setMeetingData({
       ...meetingData,
       [name]: value,
+    });
+  };
+
+  const handleSprintSelect = (e) => {
+    setMeetingData({
+      ...meetingData,
+      sprints: e.target.value, // Met à jour le sprint sélectionné dans l'état local
     });
   };
 
@@ -73,6 +109,10 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       await axios.post('http://localhost:3000/meet/add', meetingData);
       onMeetingAdded();
@@ -80,9 +120,6 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
       console.error('Error adding meeting:', error);
     }
   };
-
-  
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white p-8 rounded-md w-[500px]">
@@ -97,6 +134,7 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.summary && <p className="text-red-500">{errors.summary}</p>}
           </label>
 
           <label className="block mb-4">
@@ -108,6 +146,7 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+             {errors.description && <p className="text-red-500">{errors.description}</p>}
           </label>
 
           <label className="block mb-4">
@@ -119,6 +158,7 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.startDateTime && <p className="text-red-500">{errors.startDateTime}</p>}
           </label>
 
           <label className="block mb-4">
@@ -130,6 +170,7 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.endDateTime && <p className="text-red-500">{errors.endDateTime}</p>}
           </label>
 
           <label className="block mb-4">
@@ -160,6 +201,7 @@ const AddMeetingForm = ( { onClose, onMeetingAdded } ) => {
                 />
               </div>
             ))}
+            {errors.attendees && <p className="text-red-500">{errors.attendees}</p>}
             <button type="button" onClick={addAttendee} className="bg-blue-500 text-white px-4 py-2 rounded">
               Add Attendee
             </button>

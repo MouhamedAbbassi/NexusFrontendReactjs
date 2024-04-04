@@ -16,6 +16,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
     sprints: '',
   });
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     fetchMeetingData();
@@ -37,6 +38,42 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
     } catch (error) {
       console.error(`Error fetching meeting with ID ${meetingId}:`, error);
     }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!meetingData.summary.trim()) {
+      errors.summary = 'Summary is required';
+    }
+
+    if (!meetingData.description.trim()) {
+      errors.description = 'Description is required';
+    }
+
+    if (!meetingData.startDateTime) {
+      errors.startDateTime = 'Start date and time are required';
+    }
+
+    if (!meetingData.endDateTime) {
+      errors.endDateTime = 'End date and time are required';
+    } else if (new Date(meetingData.endDateTime) <= new Date(meetingData.startDateTime)) {
+      errors.endDateTime = 'End date and time must be after start date and time';
+    }
+
+    const invalidEmails = meetingData.attendees.filter(attendee => !validateEmail(attendee.email));
+    if (invalidEmails.length > 0) {
+      errors.attendees = 'Invalid email address';
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateEmail = (email) => {
+    // Expression régulière pour valider une adresse e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleChange = (e) => {
@@ -66,6 +103,10 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       await axios.put(`http://localhost:3000/meet/update/${meetingId}`, meetingData);
       onMeetingUpdated();
@@ -91,6 +132,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
     },
   };
 
+
   return (
     <Modal
     isOpen={isModalOpen}
@@ -110,6 +152,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.summary && <p className="text-red-500">{errors.summary}</p>}
           </label>
 
           <label className="block">
@@ -121,6 +164,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.description && <p className="text-red-500">{errors.description}</p>}
           </label>
 
           <label className="block">
@@ -132,6 +176,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.startDateTime && <p className="text-red-500">{errors.startDateTime}</p>}
           </label>
 
           <label className="block">
@@ -143,6 +188,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
               onChange={handleChange}
               className="form-input mt-1 block w-full"
             />
+            {errors.endDateTime && <p className="text-red-500">{errors.endDateTime}</p>}
           </label>
 
           <label className="block">
@@ -157,6 +203,7 @@ const UpdateMeetingForm = ({ onClose, onMeetingUpdated }) => {
                 />
               </div>
             ))}
+            {errors.attendees && <p className="text-red-500">{errors.attendees}</p>}
             <button
               type="button"
               onClick={addAttendee}

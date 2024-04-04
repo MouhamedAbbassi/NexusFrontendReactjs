@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-
 const UpdateSprint = ({ sprintId, onUpdate }) => {
     const [updateData, setUpdateData] = useState({
         nom: '',
@@ -16,22 +15,23 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
         asp: '',
     });
     const [isModalOpen, setIsModalOpen] = useState(true);
+    const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    const fetchSprintData = async () => {
-      if (sprintId) {
-        try {
-          const response = await axios.get(`http://localhost:3000/sprints/getsprintbyid/${sprintId}`);
-          const existingSprint = response.data;
-          setUpdateData(existingSprint);
-        } catch (error) {
-          console.error("Error fetching sprint data", error);
-        }
-      }
-    };
+    useEffect(() => {
+        const fetchSprintData = async () => {
+            if (sprintId) {
+                try {
+                    const response = await axios.get(`http://localhost:3000/sprints/getsprintbyid/${sprintId}`);
+                    const existingSprint = response.data;
+                    setUpdateData(existingSprint);
+                } catch (error) {
+                    console.error("Error fetching sprint data", error);
+                }
+            }
+        };
 
-    fetchSprintData();
-  }, [sprintId]);
+        fetchSprintData();
+    }, [sprintId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -45,8 +45,41 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
         setUpdateData((prevData) => ({ ...prevData, taches: updatedTaches }));
     };
 
+    const validateForm = () => {
+        const errors = {};
+
+        if (!updateData.nom.trim()) {
+            errors.nom = 'Nom du sprint est requis';
+        }
+
+        if (!updateData.startDate) {
+            errors.startDate = 'Date de début est requise';
+        }
+
+        if (!updateData.endDate) {
+            errors.endDate = 'Date de fin est requise';
+        } else if (new Date(updateData.endDate) <= new Date(updateData.startDate)) {
+            errors.endDate = 'La date de fin doit être postérieure à la date de début';
+        }
+
+        const invalidTaches = updateData.taches.some(tache => {
+            return !tache.name.trim() || !tache.type || !tache.priority || !tache.status || !tache.esp || !tache.asp;
+        });
+
+        if (invalidTaches) {
+            errors.taches = 'Veuillez remplir tous les champs des tâches';
+        }
+
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleUpdate = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
 
         try {
             await axios.patch(`http://localhost:3000/sprints/update/${sprintId}`, updateData);
@@ -63,11 +96,12 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
             taches: [...prevData.taches, { name: '', type: '', priority: '', status: '', esp: '', asp: '' }],
         }));
     };
+
     const closeModal = () => {
         setIsModalOpen(false);
-      };
+    };
 
-      const modalStyles = {
+    const modalStyles = {
         content: {
             top: '50%',
             left: '50%',
@@ -75,10 +109,11 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
             bottom: 'auto',
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
-            maxWidth: '30%', // Adjust the maximum width as needed,
+            maxWidth: '30%', 
+            maxHeight: '80vh',
+            overflowY: 'auto',
         },
-      };
-
+    };
     return (
         <Modal
         isOpen={isModalOpen}
@@ -97,6 +132,7 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
                     onChange={handleInputChange}
                     className="w-full p-2 border rounded"
                 />
+                {errors.nom && <p className="text-red-500">{errors.nom}</p>}
 
                 <label className="block">Start Date :</label>
                 <input
@@ -106,6 +142,7 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
                     onChange={handleInputChange}
                     className="w-full p-2 border rounded"
                 />
+                {errors.startDate && <p className="text-red-500">{errors.startDate}</p>}
 
                 <label className="block">End Date :</label>
                 <input
@@ -115,6 +152,7 @@ const UpdateSprint = ({ sprintId, onUpdate }) => {
                     onChange={handleInputChange}
                     className="w-full p-2 border rounded"
                 />
+                {errors.endDate && <p className="text-red-500">{errors.endDate}</p>}
 
                 <div className="space-y-4">
                     <h3 className="text-lg font-semibold mb-2">Tâches</h3>

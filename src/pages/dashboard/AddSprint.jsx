@@ -2,18 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-
-
 const AddSprint = ({ onSprintAdded }) => {
   const [newSprint, setNewSprint] = useState({
     nom: '',
     startDate: new Date(),
     endDate: new Date(),
     taches: [],
-    
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -21,11 +19,36 @@ const AddSprint = ({ onSprintAdded }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setErrors({}); // Clear errors when closing modal
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!newSprint.nom.trim()) {
+      errors.nom = 'Name is required';
+    }
+     // Validation for start date
+  if (!newSprint.startDate) {
+    errors.startDate = 'Start date is required';
+  }
+
+  // Validation for end date
+  if (!newSprint.endDate) {
+    errors.endDate = 'End date is required';
+  } else if (newSprint.endDate <= newSprint.startDate) {
+    errors.endDate = 'End date must be after start date';
+  }
+    // Add more validation rules for other fields if needed
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const addSprint = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     try {
       // Convertir les enums du front-end en lowercase pour correspondre aux enums du back-end
@@ -36,7 +59,6 @@ const AddSprint = ({ onSprintAdded }) => {
         status: tache.status.toLowerCase(),
         esp: tache.esp,
         asp: tache.asp,
-
       }));
 
       const response = await axios.post('http://localhost:3000/sprints/ajouter', {
@@ -44,7 +66,6 @@ const AddSprint = ({ onSprintAdded }) => {
         startDate: newSprint.startDate,
         endDate: newSprint.endDate,
         taches: formattedTaches,
-        
       });
 
       const nouveauSprint = response.data.sprint;
@@ -56,11 +77,9 @@ const AddSprint = ({ onSprintAdded }) => {
         startDate: new Date(),
         endDate: new Date(),
         taches: [],
-        
       });
       closeModal();
       onSprintAdded(nouveauSprint);
-
     } catch (error) {
       console.error("Erreur lors de l'ajout du sprint", error);
     }
@@ -81,23 +100,23 @@ const AddSprint = ({ onSprintAdded }) => {
   const addTache = () => {
     setNewSprint((prevSprint) => ({
       ...prevSprint,
-      taches: [...prevSprint.taches, { name: '', type: '', priority: '', status: '', esp: '',asp: '', }],
+      taches: [...prevSprint.taches, { name: '', type: '', priority: '', status: '', esp: '', asp: '' }],
     }));
   };
 
   const modalStyles = {
     content: {
-      top: '30%',
+      top: '50%',
       left: '50%',
       right: 'auto',
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       maxWidth: '40%', // Adjust the maximum width as needed,
+      maxHeight: '80vh', // Ajuster la hauteur maximale de la modal
+      overflowY: 'auto', // Activer le défilement vertical si nécessaire
     },
   };
-
-
   return (
     <div>
       <button
@@ -122,6 +141,7 @@ const AddSprint = ({ onSprintAdded }) => {
           onChange={handleInputChange}
           className="w-full p-2 mb-4 border rounded"
         />
+        {errors.nom && <p className="text-red-500">{errors.nom}</p>}
         <label className="block mb-2">Start date</label>
         <input
           type="date"
@@ -130,6 +150,7 @@ const AddSprint = ({ onSprintAdded }) => {
           onChange={handleInputChange}
           className="w-full p-2 mb-4 border rounded"
         />
+        {errors.startDate && <p className="text-red-500">{errors.startDate}</p>}
         <label className="block mb-2">End date</label>
         <input
           type="date"
@@ -138,11 +159,13 @@ const AddSprint = ({ onSprintAdded }) => {
           onChange={handleInputChange}
           className="w-full p-2 mb-4 border rounded"
         />
+        {errors.endDate && <p className="text-red-500">{errors.endDate}</p>}
 
         
         <button type="button" onClick={addTache} className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">
         <i class="fas fa-tasks"></i> Add Tasks 
         </button><br></br>
+        
 
         {newSprint.taches.map((tache, index) => (
           <div key={index} className="mb-4">

@@ -16,16 +16,43 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 import { MaterialTailwindControllerProvider } from "@/context";
 import "../public/css/tailwind.css";
-
+import { UserProvider } from "./context/userContext";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import store from "./reduxToolkit/store";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Provider } from "react-redux";
+import { DndProvider } from "react-dnd";
+import WrapperProject from "./pages/context/serviceProject";
+import WrapperMembers from "./pages/context/serviceMembre";
+import { ChakraProvider } from "@chakra-ui/react";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  
-  <React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <MaterialTailwindControllerProvider>
-          <App />
+     
+          <UserProvider>
+      
+            <GoogleOAuthProvider clientId="551424376539-utblai5fvatj1929pov7qicdqruoeju2.apps.googleusercontent.com">
+           
+            <WrapperProject>
+                  <WrapperMembers>
+            <DndProvider backend={HTML5Backend}>
+          {/*  <ChakraProvider> */}
+              <App />
+             {/* </ChakraProvider>*/}
+              </DndProvider>
+              </WrapperMembers>
+                </WrapperProject>
+            </GoogleOAuthProvider>
+         
+          </UserProvider>
+       
         </MaterialTailwindControllerProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
+  </Provider>
+  
 );

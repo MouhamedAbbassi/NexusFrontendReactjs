@@ -14,7 +14,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
   const sidenavTypes = {
-    dark: "bg-gradient-to-br from-gray-800 to-gray-900",
+    black: "bg-gradient-to-br from-gray-800 to-gray-900",
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
@@ -30,10 +30,11 @@ export function Sidenav({ brandImg, brandName, routes }) {
       className={`${sidenavTypes[sidenavType]} ${
         openSidenav ? "translate-x-0" : "-translate-x-80"
       } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
+      style={{  overflowY: "auto" , scrollbarWidth: "thin"}}
     >
       
       <div
-        className={`relative`}
+        className={`relative`} 
       >
      
         <Link to="/" className="py-6 px-8 text-center">
@@ -43,7 +44,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         
           <Typography
             variant="h6"
-            color={sidenavType === "dark" ? "white" : "blue-gray"}
+            color={sidenavType === "black" ? "white" : "blue-gray"}
           >
             {brandName}
             
@@ -58,7 +59,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
               <li className="mx-3.5 mt-4 mb-2">
                 <Typography
                   variant="small"
-                  color={sidenavType === "dark" ? "white" : "blue-gray"}
+                  color={sidenavType === "black" ? "white" : "blue-gray"}
                   className="font-black uppercase opacity-75"
                 >
                   {title}
@@ -74,7 +75,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       color={
                         isActive
                           ? sidenavColor
-                          : sidenavType === "dark"
+                          : sidenavType === "black"
                           ? "white"
                           : "blue-gray"
                       }

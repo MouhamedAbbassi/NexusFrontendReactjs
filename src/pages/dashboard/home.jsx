@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Typography,
   Card,
@@ -26,8 +26,44 @@ import {
   ordersOverviewData,
 } from "@/data";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { useSearchParams } from "react-router-dom";
+import axios from 'axios';
+
+import useUser from '../../context/useUser'
 
 export function Home() {
+   const [searchParams] = useSearchParams();
+    const ghToken = searchParams.get('github-token');
+    const username = searchParams.get('username');
+    const { updateUser, clearUser } = useUser();
+  
+
+    useEffect(() => {
+      async function fetchUserData() {
+        if ( ghToken ) {
+          try {
+            const response = await axios.get( `https://api.github.com/users/${username}`, {
+              headers: {
+                Authorization: `${ ghToken }`,
+                'X-GitHub-Api-Version': '2022-11-28'
+              }});
+
+            const userData = {
+              username: response.data.login,
+              avatar: response.data.avatar_url
+            };
+            updateUser( userData );
+          } catch ( error ) {
+            console.error( 'Error fetching user data:', error );
+            clearUser();
+            }
+        } else {
+
+        }
+      }
+    fetchUserData();
+    }, []);
+  
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -65,7 +101,7 @@ export function Home() {
           />
         ))}
       </div>
-      <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
+     {/* <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
         <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">
           <CardHeader
             floated={false}
@@ -84,7 +120,7 @@ export function Home() {
                 <CheckCircleIcon strokeWidth={3} className="h-4 w-4 text-blue-gray-200" />
                 <strong>30 done</strong> this month
               </Typography>
-            </div>
+      </div>
             <Menu placement="left-start">
               <MenuHandler>
                 <IconButton size="sm" variant="text" color="blue-gray">
@@ -250,8 +286,8 @@ export function Home() {
             )}
           </CardBody>
         </Card>
-      </div>
-    </div>
+          </div>*/}
+          </div>
   );
 }
 

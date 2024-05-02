@@ -4,50 +4,63 @@ import {
   UsersIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/solid";
+import axios from 'axios';
 
+// Function to fetch data from backend
+async function fetchData(endpoint) {
+  try {
+    const response = await axios.get(endpoint);
+    return response.data; // Assuming the response data is an array of objects
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return []; // Return an empty array in case of error
+  }
+}
+
+// Fetch data for active users
+fetchData('http://localhost:3000/users/active/all').then(activeData => {
+  const numberOfActiveUsers = activeData.length;
+  statisticsCardsData[0].value = numberOfActiveUsers;
+});
+
+// Fetch data for not active users
+fetchData('http://localhost:3000/users/notActive/all').then(notActiveData => {
+  const numberOfNotActiveUsers = notActiveData.length;
+  statisticsCardsData[1].value = numberOfNotActiveUsers;
+});
+
+// Original statisticsCardsData before modification
 export const statisticsCardsData = [
   {
     color: "gray",
-    icon: BanknotesIcon,
-    title: "Today's Money",
-    value: "$53k",
+    icon: UsersIcon,
+    title: "Connected Users",
+    value: 0, // Set a default value, it will be updated after fetching data
     footer: {
       color: "text-green-500",
-      value: "+55%",
+      value: "+16%",
       label: "than last week",
     },
   },
   {
     color: "gray",
     icon: UsersIcon,
-    title: "Today's Users",
-    value: "2,300",
+    title: "Not Connected Users",
+    value: 0, // Set a default value, it will be updated after fetching data
     footer: {
       color: "text-green-500",
       value: "+3%",
-      label: "than last month",
+      label: "than last week",
     },
   },
-  {
+    {
     color: "gray",
     icon: UserPlusIcon,
-    title: "New Clients",
-    value: "3,462",
+    title: "Active Projects ",
+    value: "3",
     footer: {
       color: "text-red-500",
-      value: "-2%",
-      label: "than yesterday",
-    },
-  },
-  {
-    color: "gray",
-    icon: ChartBarIcon,
-    title: "Sales",
-    value: "$103,430",
-    footer: {
-      color: "text-green-500",
-      value: "+5%",
-      label: "than yesterday",
+      label: "Already has 3 active projects",
     },
   },
 ];

@@ -9,11 +9,23 @@ import {
 } from "@/widgets/layout";
 import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
+import { useEffect } from "react";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.chatbase.co/embed.min.js';
+    script.defer = true;
+    script.setAttribute('chatbotId', 'WtaXf6WiqQ8hV3ekqbIJ_');
+    script.setAttribute('domain', 'www.chatbase.co');
+    document.body.appendChild(script);
 
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav

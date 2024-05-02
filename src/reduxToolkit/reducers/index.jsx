@@ -4,7 +4,7 @@ import backlogReducer from './backlogReducers ';
 
 const rootReducer = combineReducers({
   tasks: taskReducer,
-  backlog:backlogReducer
+  backlog: backlogReducer,
 });
 
 export default rootReducer;

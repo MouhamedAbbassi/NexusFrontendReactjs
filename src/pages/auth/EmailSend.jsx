@@ -1,8 +1,15 @@
-// EmailSend.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VerifyOTP from './VerifyOTP';
+import LOGO from "../../../public/img/NEXUS-LOGO.png";
+
+const logoStyle = {
+  display: "block",
+  margin: "20px auto 30px", // Espace entre le logo et le formulaire
+  width: '80px',
+  height: 'auto',
+  borderRadius: '8px',
+};
 
 function EmailSend() {
   const [email, setEmail] = useState('');
@@ -31,11 +38,14 @@ function EmailSend() {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '10px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', width: '500px' }}>
+      <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '10px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', width: '500px', border: '1px solid black' }}>
+        <center>
+          <img src={LOGO} style={logoStyle} alt="NEXUS Logo" />
+        </center>
         {!showVerifyOTP ? (
           <div>
             <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Send Email</h2>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}> {/* Ajout de la marge en haut */}
               <input
                 type="email"
                 value={email}

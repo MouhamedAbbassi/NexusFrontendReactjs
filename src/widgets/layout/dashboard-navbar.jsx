@@ -1,4 +1,5 @@
-import { useLocation, Link } from "react-router-dom";
+
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   Typography,
@@ -25,13 +26,46 @@ import {
   setOpenConfigurator,
   setOpenSidenav,
 } from "@/context";
+import { useLocation, Link, useSearchParams } from "react-router-dom";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+import useUser from "@/context/useUser";
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
-  const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [ layout, page ] = pathname.split( "/" ).filter( ( el ) => el !== "" );
 
+  const navigate = useNavigate();
+
+  
+    const { updateUser, clearUser, user } = useUser();
+
+    const handleLogout = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token from localStorage:', token); 
+    
+        if (!token) {
+          console.log('Token not found in localStorage');
+          return;
+        }
+    
+        const response = await axios.post('http://localhost:3000/users/logout', { token });
+        console.log('Logout response:', response.data);
+       if (response.data) {
+        
+         localStorage.removeItem('token');
+         navigate('/auth/sign-in');
+         
+       }
+    
+       
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}
@@ -67,14 +101,15 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          <Link to="/auth/sign-in">
+          { !user ? (
+            <Link to="/auth/sign-out">
             <Button
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 xl:flex normal-case"
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign In
+              Sign Out
             </Button>
             <IconButton
               variant="text"
@@ -83,7 +118,28 @@ export function DashboardNavbar() {
             >
               <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
             </IconButton>
-          </Link>
+          </Link>)
+            : (
+              <Link>
+                <div>
+                  {/* put user name and photo here */ }
+                  <div className="flex items-center gap-1">
+                       <div className="w-10 h-10 rounded-full overflow-hidden">
+                        <img
+                          src={user.avatar}
+                          className="w-full h-full rounded-full"
+                          alt=""
+                        />
+                      </div>
+                    <div>
+                      <Typography variant="h6" color="blue-gray">
+                        {user.username}
+                      </Typography>
+                     </div>
+                  </div>
+                </div>
+              </Link>
+     )     }
           <Menu>
             <MenuHandler>
               <IconButton variant="text" color="blue-gray">

@@ -14,7 +14,7 @@ const Row = ({ id, name, description,startDate,endDate ,membres}) => {
       <Td>{description}</Td>
       <Td>{startDate}</Td>
       <Td>{endDate}</Td>
-      <Td>{membres}</Td>
+      <Td>{membres+','}</Td>
      
       
       <Td>

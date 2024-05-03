@@ -95,6 +95,7 @@ FetchProjects,
             <Table variant="simple">
               <Thead>
                 <Tr>
+                <Th></Th>
                   <Th>name</Th>
                   <Th>description</Th>
                   <Th>startDate</Th>

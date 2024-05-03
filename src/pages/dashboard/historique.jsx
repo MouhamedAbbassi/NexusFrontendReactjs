@@ -1,10 +1,10 @@
-// Historique.js
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography, IconButton } from '@material-ui/core';
 import { Card, CardBody, CardHeader } from '@material-tailwind/react';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 function Historique() {
   const { resourceId } = useParams();
@@ -42,6 +42,9 @@ function Historique() {
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <div className="flex items-center">
+            <IconButton component={Link} to="/ressources" style={{ marginRight: '8px' }}>
+              <ArrowBackIcon />
+            </IconButton>
             <Typography variant="h6" color="white">
               Historique de la ressource '{resourceId}'
             </Typography>
@@ -72,8 +75,7 @@ function Historique() {
                   <td className="border-b border-blue-gray-50 py-3 px-5">{new Date(item.createdAt).toLocaleString()}</td>
                   <td className="border-b border-blue-gray-50 py-3 px-5">{item.modifiedAt ? new Date(item.modifiedAt).toLocaleString() : '-'}</td>
                   <td className="border-b border-blue-gray-50 py-3 px-5">
-                  <Link to={`/historiques/details/${item._id}`}>Détails</Link>
-
+                    <Link to={`/historiques/details/${item._id}`}>Détails</Link>
                   </td>
                 </tr>
               ))}
@@ -86,4 +88,3 @@ function Historique() {
 }
 
 export default Historique;
-

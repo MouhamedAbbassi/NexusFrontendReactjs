@@ -39,9 +39,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <WrapperProject>
                   <WrapperMembers>
             <DndProvider backend={HTML5Backend}>
-          {/*  <ChakraProvider> */}
+            {/* <ChakraProvider> */}
               <App />
-             {/* </ChakraProvider>*/}
+              {/*</ChakraProvider> */}
               </DndProvider>
               </WrapperMembers>
                 </WrapperProject>

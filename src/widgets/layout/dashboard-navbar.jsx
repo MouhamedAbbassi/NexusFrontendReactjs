@@ -103,14 +103,14 @@ export function DashboardNavbar() {
           </IconButton>
           { !user ? (
             <Link to="/auth/sign-out">
-            <Button
+            {/* <Button
               variant="text"
               color="blue-gray"
               className="hidden items-center gap-1 px-4 xl:flex normal-case"
             >
-              <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              Sign Out
-            </Button>
+             <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+              //Sign Out
+          </Button>*/}
             <IconButton
               variant="text"
               color="blue-gray"
